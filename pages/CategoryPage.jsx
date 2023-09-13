@@ -4,8 +4,6 @@ import CategoryCard from '../components/CategoryCard'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-
-
 function Page({ navigation }) {
   const [categories, setCategories] = useState([])
   const fetchCategory = async () => {
