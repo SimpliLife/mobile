@@ -36,7 +36,6 @@ function MapComponent() {
       >
         <Marker coordinate={mapRegion} title='Marker' />
       </MapView>
-      <Button title='Get Location' onPress={userLocation} />
     </>
   )
 }

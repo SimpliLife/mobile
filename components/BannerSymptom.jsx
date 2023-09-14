@@ -14,10 +14,10 @@ function Compoent(props) {
 }
 const styles = StyleSheet.create({
   banner: {
-    width: 350,
+    width: 356,
     height: 98,
     margin: "auto",
-    marginVertical: 14,
+    marginBottom: 14,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import BannerSymptom from '../components/BannerSymptom';
 import ButtonPraDiagnose from '../components/ButtonPraDiagnose'
+import InputLocation from "../components/InputLocation"
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -62,6 +63,9 @@ function Page({ navigation }) {
 
   return (
     <View style={styles.viewPraDiagnose}>
+      <View style={{ width: 370 }}>
+        <InputLocation navigation={navigation} />
+      </View>
       <BannerSymptom icon={icon} category={category} title={symptom} />
       <View style={styles.groupingContent}>
         <Text style={styles.header}>Pertanyaan : </Text>

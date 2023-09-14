@@ -10,10 +10,11 @@ function Compoent() {
 }
 const styles = StyleSheet.create({
   banner: {
-    width: 350,
+    alignSelf: "center",
+    width: 358,
     height: 98,
     margin: "auto",
-    marginVertical: 14,
+    marginTop: 16,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

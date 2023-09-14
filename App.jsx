@@ -6,6 +6,7 @@ import SymptomPage from './pages/SymptomPage'
 import PraDiagnosePage from './pages/PraDiagnosePage'
 import PraDiagnosedPage from './pages/PraDiagnosedPage'
 import MedFacilityPage from './pages/MedFacilityPage'
+import SearchLocationPage from './pages/SearchLocationPage'
 import { Image, StatusBar, StyleSheet } from 'react-native';
 const Stack = createNativeStackNavigator();
 
@@ -41,11 +42,12 @@ function App() {
         headerTintColor: "#F7F7F8",
         headerBackground: () => <HeaderBackground />,
       }}>
-        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="MedFacilityPage" component={MedFacilityPage} />
-        {/* <Stack.Screen options={{ title: 'DiagnoAkses' }} name="CategoryPage" component={CategoryPage} />
+        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="CategoryPage" component={CategoryPage} />
         <Stack.Screen options={{ title: 'DiagnoAkses' }} name="SymptomPage" component={SymptomPage} />
         <Stack.Screen options={{ title: 'DiagnoAkses' }} name="PraDiagnosePage" component={PraDiagnosePage} />
-        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="PraDiagnosedPage" component={PraDiagnosedPage} /> */}
+        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="PraDiagnosedPage" component={PraDiagnosedPage} />
+        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="MedFacilityPage" component={MedFacilityPage} />
+        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="SearchLocationPage" component={SearchLocationPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

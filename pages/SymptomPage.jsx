@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import BannerSymptom from '../components/BannerSymptom'
+import InputLocation from "../components/InputLocation"
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -30,6 +31,9 @@ function Page({ navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center' }}>
+      <View style={{ width: 370 }}>
+        <InputLocation navigation={navigation} />
+      </View>
       <BannerSymptom icon={icon} category={category} title={title} />
       <Text style={{ width: 350, textAlign: "left", fontWeight: "600", padding: 8 }}>Pilihan Gejala : </Text>
       <FlatList

@@ -1,6 +1,9 @@
 import React from 'react'
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import { API_URL, GOOGLE_API_KEY } from "@env"
+const { GOOGLE_PROJECT_ID, GOOGLE_API_KEY } = {
+  GOOGLE_API_KEY: 'AIzaSyB6sUuookD3daNKD7cd1Sm2d9_SjPx7REc',
+  GOOGLE_PROJECT_ID: 'developer-ayusudi'
+}
 
 const containerStyle = {
   width: '400px',

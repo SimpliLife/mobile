@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import MapComponent from '../components/MapComponent';
-import { StyleSheet, Text, View, Dimensions, Button, Platform, Image, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import CardFaskes from "../components/CardFaskes"
+import InputLocation from "../components/InputLocation"
 
 function Page({ navigation }) {
   const [data, setData] = useState([
@@ -11,13 +12,13 @@ function Page({ navigation }) {
     <View style={styles.container}>
       <MapComponent />
       <FlatList
+        ListHeaderComponent={<InputLocation navigation={navigation} />}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 80 }}
         data={data}
-        keyExtractor={(el) => el.id}
+        keyExtractor={(el, i) => i}
         renderItem={(el) => <CardFaskes />}
       />
-
     </View>
   );
 }
