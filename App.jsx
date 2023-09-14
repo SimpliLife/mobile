@@ -7,6 +7,7 @@ import PraDiagnosePage from './pages/PraDiagnosePage'
 import PraDiagnosedPage from './pages/PraDiagnosedPage'
 import MedFacilityPage from './pages/MedFacilityPage'
 import SearchLocationPage from './pages/SearchLocationPage'
+import ChatPage from './pages/ChatPage'
 import { Image, Platform, StatusBar, StyleSheet } from 'react-native';
 
 
@@ -49,6 +50,7 @@ function App() {
         <Stack.Screen options={{ title: 'DiagnoAkses' }} name="PraDiagnosedPage" component={PraDiagnosedPage} />
         <Stack.Screen options={{ title: 'DiagnoAkses' }} name="MedFacilityPage" component={MedFacilityPage} />
         <Stack.Screen options={{ title: 'DiagnoAkses' }} name="SearchLocationPage" component={SearchLocationPage} />
+        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="ChatPage" component={ChatPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -12,6 +12,9 @@ function Page({ navigation }) {
   const moveMedFacility = () => {
     navigation.navigate('MedFacilityPage');
   }
+  const moveChat = () => {
+    navigation.navigate('ChatPage');
+  }
   return (
     <View style={{ flex: 1, alignItems: 'center', flexDirection: "column" }}>
       <InputLocation navigation={navigation} />
@@ -30,7 +33,7 @@ function Page({ navigation }) {
       </View >
       <View style={{ flex: 1, gap: 16, paddingVertical: 18 }}>
         <ButtonBlue color="#118AC4" text="Lihat Fasilitas Terdekat" action={moveMedFacility} />
-        <ButtonBlue color="#43AFE9" text="Konsultasi Online Dengan Dokter" action={moveMedFacility} />
+        <ButtonBlue color="#43AFE9" text="Konsultasi Online Dengan Dokter" action={moveChat} />
       </View>
     </View >
   );
