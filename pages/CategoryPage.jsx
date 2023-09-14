@@ -1,6 +1,7 @@
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Platform } from 'react-native';
 import BannerDiagnoAkses from '../components/BannerDiagnoAkses'
 import CategoryCard from '../components/CategoryCard'
+import InputLocation from "../components/InputLocation"
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -8,11 +9,11 @@ function Page({ navigation }) {
   const [categories, setCategories] = useState([])
   const fetchCategory = async () => {
     try {
-      let { data } = await axios.get("http://localhost:3000/api/categories")
+      let { data } = await axios.get("https://simplilife-d59aa106cc03.herokuapp.com/api/categories")
       setCategories(data.categories)
       return data
     } catch (error) {
-      console.log(error);
+      console.log(error.name);
     }
   }
 
@@ -22,8 +23,12 @@ function Page({ navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center' }}>
-      <BannerDiagnoAkses />
       <FlatList
+        ListHeaderComponent={<View style={{ justifyContent: "center" }}>
+          <BannerDiagnoAkses />
+          <InputLocation navigation={navigation} />
+        </View>}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 80 }}
         data={categories}
         keyExtractor={(el) => el.id}

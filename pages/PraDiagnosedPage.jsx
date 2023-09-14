@@ -1,7 +1,9 @@
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions, Platform } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import BannerSymptom from '../components/BannerSymptom'
 import ButtonBlue from '../components/ButtonBlue';
+import InputLocation from "../components/InputLocation"
+
 
 function Page({ navigation }) {
   const route = useRoute();
@@ -12,8 +14,9 @@ function Page({ navigation }) {
   }
   return (
     <View style={{ flex: 1, alignItems: 'center', flexDirection: "column" }}>
+      <InputLocation navigation={navigation} />
       <BannerSymptom icon={icon} category={category} title={symptom} />
-      <View style={{ width: 350, flexDirection: "column", gap: 8, marginTop: 4 }}>
+      <View style={{ width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90, flexDirection: "column", gap: 8, marginTop: 4 }}>
         <View style={{ borderRadius: 12, backgroundColor: "#EBF3FF", padding: 12 }}>
           <Text style={{ fontSize: 12.5, textAlign: "left", fontWeight: "600", lineHeight: 20, paddingVertical: 6 }}>
             {result}
@@ -32,5 +35,7 @@ function Page({ navigation }) {
     </View >
   );
 }
+
+
 
 export default Page;

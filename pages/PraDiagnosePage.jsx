@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Platform, ScrollView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import BannerSymptom from '../components/BannerSymptom';
 import ButtonPraDiagnose from '../components/ButtonPraDiagnose'
+import InputLocation from "../components/InputLocation"
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -24,7 +25,7 @@ function Page({ navigation }) {
 
   const fetchDetail = async () => {
     try {
-      let { data } = await axios.get(`http://localhost:3000/api/symptoms/${id}`);
+      let { data } = await axios.get(`https://simplilife-d59aa106cc03.herokuapp.com/api/symptoms/${id}`);
       setData(data);
       setQuestion(data.firstQuestion);
       return data;
@@ -62,9 +63,12 @@ function Page({ navigation }) {
 
   return (
     <View style={styles.viewPraDiagnose}>
-      <BannerSymptom icon={icon} category={category} title={symptom} />
-      <View style={styles.groupingContent}>
-        <Text style={styles.header}>Pertanyaan : </Text>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ marginBottom: 30 }}>
+        <InputLocation navigation={navigation} />
+        <BannerSymptom icon={icon} category={category} title={symptom} />
+        <Text style={{ width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90, textAlign: "left", fontWeight: "600", padding: 8, paddingTop: 2 }}>Pertanyaan : </Text>
         <View style={styles.questionCard}>
           <Text style={styles.text}>{question}</Text>
         </View>
@@ -73,16 +77,19 @@ function Page({ navigation }) {
         {
           listAnswer.length ? <ButtonPraDiagnose key="back" action={popAnswer} text="Kembali ke pilihan gejala" /> : <></>
         }
-      </View>
+      </ScrollView>
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  viewPraDiagnose: { flex: 1, alignItems: 'center' },
-  groupingContent: { flex: 1, width: 350, flexDirection: "column", gap: 8, marginTop: 4 },
-  header: { textAlign: "left", fontWeight: "600", padding: 8 },
-  questionCard: { borderRadius: 12, backgroundColor: "#F8F8F8", padding: 12 },
+  viewPraDiagnose: { alignItems: 'center' },
+  header: { textAlign: "left", fontWeight: "600", padding: 8, paddingTop: 4 },
+  questionCard: {
+    width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90,
+    borderRadius: 12, backgroundColor: "#F8F8F8", padding: 12, marginBottom: 10
+  },
   text: { fontSize: 12.5, textAlign: "left", fontWeight: "600", lineHeight: 20, paddingVertical: 6 }
 });
 
