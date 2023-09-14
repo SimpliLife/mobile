@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Dimensions, Platform } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Platform, ScrollView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import BannerSymptom from '../components/BannerSymptom';
 import ButtonPraDiagnose from '../components/ButtonPraDiagnose'
@@ -63,19 +63,22 @@ function Page({ navigation }) {
 
   return (
     <View style={styles.viewPraDiagnose}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ marginBottom: 30 }}>
+        <InputLocation navigation={navigation} />
+        <BannerSymptom icon={icon} category={category} title={symptom} />
+        <Text style={{ width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90, textAlign: "left", fontWeight: "600", padding: 8, paddingTop: 2 }}>Pertanyaan : </Text>
+        <View style={styles.questionCard}>
+          <Text style={styles.text}>{question}</Text>
+        </View>
+        <ButtonPraDiagnose key="yes" text="Ya" action={pushAnswer} />
+        <ButtonPraDiagnose key="no" text="Tidak" action={pushAnswer} />
+        {
+          listAnswer.length ? <ButtonPraDiagnose key="back" action={popAnswer} text="Kembali ke pilihan gejala" /> : <></>
+        }
+      </ScrollView>
 
-      <InputLocation navigation={navigation} />
-
-      <BannerSymptom icon={icon} category={category} title={symptom} />
-      <Text style={{ width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90, textAlign: "left", fontWeight: "600", padding: 8, paddingTop: 2 }}>Pertanyaan : </Text>
-      <View style={styles.questionCard}>
-        <Text style={styles.text}>{question}</Text>
-      </View>
-      <ButtonPraDiagnose key="yes" text="Ya" action={pushAnswer} />
-      <ButtonPraDiagnose key="no" text="Tidak" action={pushAnswer} />
-      {
-        listAnswer.length ? <ButtonPraDiagnose key="back" action={popAnswer} text="Kembali ke pilihan gejala" /> : <></>
-      }
     </View>
   );
 }

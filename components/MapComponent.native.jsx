@@ -5,8 +5,8 @@ import * as Location from 'expo-location';
 
 function MapComponent() {
   const [mapRegion, setMapRegion] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
+    latitude: -6.217691,
+    longitude: 106.92424,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
@@ -17,9 +17,15 @@ function MapComponent() {
       setErrorMsg('Permission to access location was denied');
     }
     let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+    // setMapRegion({
+    //   latitude: location.coords.latitude,
+    //   longitude: location.coords.longitude,
+    //   latitudeDelta: 0.0922,
+    //   longitudeDelta: 0.0421,
+    // });
     setMapRegion({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
+      latitude: -6.217691,
+      longitude: 106.92424,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     });
@@ -31,7 +37,11 @@ function MapComponent() {
   }, []);
   return (
     <>
-      <MapView style={styles.map}
+      <MapView
+        zoomTapEnabled={true}
+        zoomControlEnabled={true}
+        zoomEnabled={true}
+        style={styles.map}
         region={mapRegion}
       >
         <Marker coordinate={mapRegion} title='Marker' />
@@ -48,7 +58,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get('window').width,
-    height: Platform.OS === 'ios' ? 400 : 200,
+    height: Platform.OS === 'ios' ? 320 : 200,
   },
 });
 
