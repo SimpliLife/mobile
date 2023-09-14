@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
 import Geocoding from 'react-native-geocoding';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import * as Location from 'expo-location';
 
 Geocoding.init('AIzaSyAHz9Xu7mzATRD5zfZXKvKiHeZbGUy865Q');
 
@@ -13,14 +15,7 @@ function InputLocation({ navigation }) {
   // Function to get the user's location
   const getLocation = async () => {
     try {
-      const position = await new Promise((resolve, reject) => {
-        Geolocation.getCurrentPosition(
-          (position) => resolve(position),
-          (error) => reject(error),
-          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-        );
-      });
-
+      let position = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = position.coords;
 
       // Fetch street name based on coordinates
