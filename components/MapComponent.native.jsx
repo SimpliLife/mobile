@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get('window').width,
-    height: 400
+    height: Platform.OS === 'ios' ? 400 : 200,
   },
 });
 

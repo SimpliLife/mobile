@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Platform, Dimensions } from 'react-native';
 function Component() {
   return (
     <View style={{
       backgroundColor: "white",
-      width: 360, height: 150, borderRadius: 12, display: 'flex', flexDirection: 'row', padding: 12, gap: 12, shadowColor: "#000",
+      width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90, height: 150, borderRadius: 12, display: 'flex', flexDirection: 'row', padding: 12, gap: 12, shadowColor: "#000",
       shadowOffset: {
         width: 0,
         height: 0.6,

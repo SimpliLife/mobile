@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, Text } from 'react-native';
+import { ImageBackground, StyleSheet, Text, Dimensions, Platform } from 'react-native';
 import GradientImg from "../assets/fig/bg-banner.png"
 function Compoent() {
   return (
@@ -11,11 +11,11 @@ function Compoent() {
 const styles = StyleSheet.create({
   banner: {
     alignSelf: "center",
-    width: 358,
-    height: 98,
+    width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90,
     margin: "auto",
     marginTop: 16,
     shadowColor: "#000",
+    flex: 1,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -28,13 +28,11 @@ const styles = StyleSheet.create({
     gap: 8
   },
   title: {
-    fontFamily: 'Helvetica Neue',
     color: '#EFEFEF',
     fontWeight: 'bold',
     fontSize: 14
   },
   text: {
-    fontFamily: 'Helvetica Neue',
     color: '#EFEFEF',
     fontSize: 12,
     textAlign: 'justify',
