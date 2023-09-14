@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Platform, Dimensions } from 'react-native';
 
 function Compoent({ text, action }) {
   return (
@@ -11,7 +11,8 @@ function Compoent({ text, action }) {
         flexDirection: "row",
         alignItems: "center",
         borderRadius: 12,
-        backgroundColor: "#F8F8F8"
+        backgroundColor: "#F8F8F8",
+        width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90
       }}
     >
       <View style={{ backgroundColor: "#C6D7EF", width: 22, height: 22, borderRadius: 100 }}></View>

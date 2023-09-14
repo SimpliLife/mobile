@@ -1,4 +1,4 @@
-import { Image, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Image, View, StyleSheet, Text, TouchableOpacity, Dimensions, Platform } from 'react-native';
 
 function Compoent({ data, navigation }) {
   let category = data.item
@@ -33,7 +33,7 @@ function Compoent({ data, navigation }) {
 
 const styles = StyleSheet.create({
   card: {
-    width: 168,
+    width: Platform.OS == 'web' ? 400 * 0.42 : Dimensions.get('window').width * 0.42,
     height: 111,
     margin: 8,
     backgroundColor: "#F4F4F4",
@@ -63,13 +63,11 @@ const styles = StyleSheet.create({
     objectFit: "contain",
   },
   title: {
-    fontFamily: 'Helvetica Neue',
     color: '#EFEFEF',
     fontWeight: 'bold',
     fontSize: 14
   },
   text: {
-    fontFamily: 'Helvetica Neue',
     color: '#EFEFEF',
     fontSize: 12,
     textAlign: 'justify',
