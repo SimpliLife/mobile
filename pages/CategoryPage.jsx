@@ -24,6 +24,7 @@ function Page({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center' }}>
       <BannerDiagnoAkses />
       <FlatList
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 80 }}
         data={categories}
         keyExtractor={(el) => el.id}

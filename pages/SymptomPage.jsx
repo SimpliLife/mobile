@@ -35,6 +35,7 @@ function Page({ navigation }) {
       <FlatList
         contentContainerStyle={{ paddingBottom: 80 }}
         data={data.Symptoms}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(el) => el.id}
         renderItem={(el) => {
           const { id, title } = el.item
