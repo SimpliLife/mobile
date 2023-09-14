@@ -1,8 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
+import Geocoding from 'react-native-geocoding';
+
+Geocoding.init('AIzaSyAHz9Xu7mzATRD5zfZXKvKiHeZbGUy865Q');
 
 function InputLocation({ navigation }) {
   const [text, onChangeText] = useState('Example Text');
+  const [location, setLocation] = useState(null);
+  const [streetName, setStreetName] = useState('');
+
+  // Function to get the user's location
+  const getLocation = async () => {
+    try {
+      const position = await new Promise((resolve, reject) => {
+        Geolocation.getCurrentPosition(
+          (position) => resolve(position),
+          (error) => reject(error),
+          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        );
+      });
+
+      const { latitude, longitude } = position.coords;
+
+      // Fetch street name based on coordinates
+      const json = await Geocoding.from({ latitude, longitude });
+      const addressComponent = json.results[0].formatted_address;
+
+      setStreetName(addressComponent);
+
+      const locationText = `Latitude: ${latitude}, Longitude: ${longitude}`;
+      onChangeText(locationText);
+      setLocation(locationText);
+    } catch (error) {
+      console.error('Error getting location:', error);
+    }
+  };
+
+  useEffect(() => {
+    // Refresh location data when the component mounts
+    getLocation();
+  }, []);
+
   return (
     <View style={{
       width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90,
@@ -25,14 +64,14 @@ function InputLocation({ navigation }) {
           alignItems: "center"
         }}
       >
-        <Text style={{ fontWeight: "600" }}>{text}</Text>
+        <Text style={{ fontWeight: "600" }}>{streetName ? streetName : "Sedang mencari lokasi"}</Text>
         <Image
           source={require('../assets/fig/pencil.png')}
           style={{ width: 15, height: 15 }}
         />
       </TouchableOpacity>
     </View>
-  )
+  );
 }
 
-export default InputLocation
+export default InputLocation;
