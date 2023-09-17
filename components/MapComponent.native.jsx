@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions, Button, Platform } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function MapComponent() {
+function MapComponent({ data }) {
   const [mapRegion, setMapRegion] = useState({
     latitude: -6.217691,
     longitude: 106.92424,
@@ -12,29 +12,21 @@ function MapComponent() {
   });
 
   const userLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      setErrorMsg('Permission to access location was denied');
-    }
-    let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-    // setMapRegion({
-    //   latitude: location.coords.latitude,
-    //   longitude: location.coords.longitude,
-    //   latitudeDelta: 0.0922,
-    //   longitudeDelta: 0.0421,
-    // });
+    let location = await AsyncStorage.getItem('location');
+    location = JSON.parse(location);
+
     setMapRegion({
-      latitude: -6.217691,
-      longitude: 106.92424,
+      latitude: location.lat,
+      longitude: location.lng,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     });
-    console.log(location.coords.latitude, location.coords.longitude);
   }
 
   useEffect(() => {
     userLocation();
   }, []);
+
   return (
     <>
       <MapView
@@ -44,11 +36,33 @@ function MapComponent() {
         style={styles.map}
         region={mapRegion}
       >
-        <Marker coordinate={mapRegion} title='Marker' />
+        {/* User's Location Marker */}
+        <Marker
+          coordinate={{
+            latitude: mapRegion.latitude,
+            longitude: mapRegion.longitude
+          }}
+          title="Your Location"
+          pinColor="red" // Change the pin color for the user's location
+        />
+
+        {/* Facility Location Markers */}
+        {data.map((facility, index) => (
+          <Marker
+            key={index}
+            coordinate={{
+              latitude: facility.lat,
+              longitude: facility.lng
+            }}
+            title={facility.facility} // Replace with the appropriate property from your facility data
+            pinColor="blue" // Change the pin color for facility locations
+          />
+        ))}
       </MapView>
     </>
   )
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -62,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MapComponent
+export default MapComponent;

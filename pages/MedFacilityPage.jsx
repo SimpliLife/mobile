@@ -46,7 +46,6 @@ function Page({ navigation }) {
 
           // Sort the data based on distance (ascending)
           fetchFaskesData.sort((a, b) => a.distance - b.distance);
-          console.log(fetchFaskesData);
           setData(fetchFaskesData)
         }
         setData(fetchFaskesData)
@@ -62,7 +61,7 @@ function Page({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <MapComponent />
+      <MapComponent data={data} />
       <FlatList
         ListHeaderComponent={<InputLocation navigation={navigation} />}
         showsVerticalScrollIndicator={false}
