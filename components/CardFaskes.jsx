@@ -1,5 +1,12 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Platform, Dimensions } from 'react-native';
-function Component() {
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Platform, Dimensions, Button, Linking } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+function Component({ data }) {
+  let jarak = () => {
+    let location = AsyncStorage.getItem('location')
+  }
+
   return (
     <View style={{
       backgroundColor: "white",
@@ -27,20 +34,16 @@ function Component() {
 
       }}>
         <TouchableOpacity>
-          <Text style={{ fontWeight: "600" }}>RS MITRA KEMAYORAN</Text>
-          <Text>Jl. HBR Motik, RT.13/RW.6, Kec. Kemayoran. </Text>
+          <Text style={{ fontWeight: "600" }}>
+            {data.facility}
+          </Text>
+          <Text>{data.address}</Text>
         </TouchableOpacity>
         <TouchableOpacity>
           <Image />
-          <Text>500 m</Text>
+          {/** Klik disini untuk diarahkan ke Google Maps, url in data.gmap_url */}
+          <Button title="Lihat di Google Maps" onPress={() => Linking.openURL(data.gmap_url)} />
         </TouchableOpacity>
-        <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity style={{ flexDirection: "row" }}>
-            <Image />
-            <Text>500 m</Text>
-          </TouchableOpacity>
-          <Text>Peta</Text>
-        </View>
 
       </View>
 

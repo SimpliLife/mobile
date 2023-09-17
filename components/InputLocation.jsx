@@ -25,6 +25,7 @@ function InputLocation({ navigation }) {
       setStreetName(addressComponent);
 
       const locationText = `Latitude: ${latitude}, Longitude: ${longitude}`;
+      AsyncStorage.setItem('location', locationText);
       onChangeText(locationText);
       setLocation(locationText);
     } catch (error) {
