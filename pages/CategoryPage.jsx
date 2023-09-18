@@ -10,7 +10,7 @@ import BannerDiagnoAkses from '../components/BannerDiagnoAkses'
 import CategoryCard from '../components/CategoryCard'
 import InputLocation from "../components/InputLocation"
 
-Geocoder.init("....")
+Geocoder.init("")
 
 function Page({ navigation }) {
   const { data, setData } = useContext(MainContext)
@@ -23,19 +23,17 @@ function Page({ navigation }) {
       setIsLoading(false)
       return response.data
     } catch (error) {
-      console.log(error.name);
+      console.log(error);
     }
   }
   const moveToSymptom = async (data) => {
     navigation.navigate('SymptomPage', { ...data })
   }
 
-  // Function to get the user's location
   const getLocation = async () => {
     try {
       let position = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = position.coords;
-      // Fetch street name based on coordinates
       const json = await Geocoder.from({ latitude, longitude });
       const addressComponent = json.results[0].formatted_address;
       let temp = { ...data }
