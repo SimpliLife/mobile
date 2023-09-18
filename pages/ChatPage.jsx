@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { View, TextInput, Button, FlatList, StyleSheet, Text } from 'react-native';
-
+import styleGlobal from "../styles"
 const ChatPage = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -16,7 +16,7 @@ const ChatPage = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styleGlobal.containerChat}>
       <FlatList
         ref={flatListRef}
         data={messages}
@@ -41,11 +41,6 @@ const ChatPage = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
   sender: {
     alignSelf: 'flex-end',
     backgroundColor: '#DCF8C6',

@@ -1,25 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Text, Dimensions, Platform, TextInput, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, FlatList, Text, TextInput, TouchableOpacity } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 
+import styles from '../styles';
+import MainContext from '../context/MainContext';
+
 function Page({ navigation }) {
-  const [data, setData] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const { data, setData } = useContext(MainContext);
+  const [dataLoc, setDataLoc] = useState([])
   const [dataFilter, setDataFilter] = useState([])
   const fetchLocation = async () => {
     try {
-      let { data } = await axios.get("https://simplilife-d59aa106cc03.herokuapp.com/api/loc")
-      setData(data.locations)
-      setDataFilter(data.locations)
-      return data.locations
+      let response = await axios.get("https://simplilife-d59aa106cc03.herokuapp.com/api/loc")
+      let result = response.data
+      setDataLoc(result.locations)
+      setDataFilter(result.locations)
+      return result.locations
     } catch (error) {
       console.log(error);
     }
   }
   useEffect(() => {
     fetchLocation()
+    setIsLoading(false)
   }, [])
+
+  const isChoosen = (obj) => {
+    let temp = { ...data }
+    if (obj) {
+      temp.value = obj.name
+      temp.filter = obj.type
+    } else {
+      temp.value = temp.location
+      temp.filter = "loc"
+    }
+    setData({ ...temp })
+    navigation.goBack()
+  }
+
   const [filterOpen, setfilterOpen] = useState(false);
   const [filterValue, setfilterValue] = useState('all');
   const [filter, setfilter] = useState([
@@ -27,29 +48,36 @@ function Page({ navigation }) {
     { label: "Povinsi", value: "province" },
     { label: "Kabupaten / Kota", value: "city" },
   ]);
-  const [text, onChangeText] = useState('Tulis disini..');
+  const [text, onChangeText] = useState('');
 
-  const { handleSubmit, control } = useForm();
-  const onSubmit = (data) => {
-    console.log(data, "data");
-  };
+  const { control } = useForm();
+  useEffect(() => {
+    let dataLocations = [...dataLoc]
+    if (dataLoc.length) {
+      if (filterValue == 'province') {
+        dataLocations = dataLocations.filter(el => el.type == 'Province')
+      } else if (filterValue == 'city') {
+        dataLocations = dataLocations.filter(el => el.type == 'City')
+      }
+    }
+    if (text.length) {
+      dataLocations = dataLocations.filter(el => el.name.toLowerCase().includes(text.toLowerCase()))
+    }
+    setDataFilter(dataLocations)
+  }, [filterValue, text])
   return (
-    <View style={styles.container}>
-      <Text style={{ width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90, textAlign: "left", fontWeight: "600", paddingVertical: 2 }}>Cari lokasimu </Text>
-      <View style={{ flexDirection: "row", zIndex: 20, gap: 5, paddingBottom: 10 }}>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
-        />
+    <View style={styles.searchContainer}>
+      <Text style={styles.cariLokasiMu}>Cari lokasimu </Text>
+      <View style={styles.searchZindex}>
+        <TextInput placeholder='Tulis disini..' style={styles.searchInput} onChangeText={onChangeText} value={text} />
         <Controller
           name="filter"
           defaultValue=""
           control={control}
           render={({ field: { onChange, value } }) => (
-            <View style={styles.dropdownfilter}>
+            <View style={styles.searchDropdownfilter}>
               <DropDownPicker
-                style={styles.dropdown}
+                style={styles.searchDropDown}
                 open={filterOpen}
                 value={filterValue} //filterValue
                 items={filter}
@@ -57,7 +85,6 @@ function Page({ navigation }) {
                 setValue={setfilterValue}
                 setItems={setfilter}
                 placeholder="Select filter"
-                placeholderStyle={styles.placeholderStyles}
                 onChangeValue={onChange}
                 zIndex={3000}
                 zIndexInverse={1000}
@@ -65,72 +92,30 @@ function Page({ navigation }) {
             </View>
           )}
         />
-        <TouchableOpacity activeOpacity={0.8} style={{ height: 50, width: 50, backgroundColor: "#118AC4", borderRadius: 8, alignItems: "center", justifyContent: "center" }}>
-          <Image source={require("../assets/fig/search.png")} style={{ width: 20, height: 20 }} />
-        </TouchableOpacity>
       </View>
 
 
       <FlatList
+        ListHeaderComponent={
+          (
+            <TouchableOpacity onPress={() => isChoosen()} activeOpacity={0.8} style={{ ...styles.searchItemContainer, backgroundColor: '#d9f2f7' }}>
+              <Text style={styles.searchTextStyleHead}>Gunakan lokasi saat ini</Text>
+              <Text style={styles.searchTextStyle}>GPS</Text>
+            </TouchableOpacity>
+          )
+        }
+        showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
         data={dataFilter}
         renderItem={(({ item }) => (
-          <View style={styles.itemContainer}>
+          <TouchableOpacity onPress={() => isChoosen(item)} key={item.id} activeOpacity={0.8} style={styles.searchItemContainer}>
             <Text style={styles.textStyleHead}>{item.name}</Text>
             <Text style={styles.textStyle}>{item.type == 'City' ? 'Kota / Kabupaten' : 'Provinsi'}</Text>
-          </View>
+          </TouchableOpacity>
         ))}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 8,
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-  },
-  itemContainer: {
-    backgroundColor: "#F4F4F4",
-    padding: 20,
-    marginVertical: 5,
-    borderRadius: 4,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90,
-  },
-  dropdown: {
-    borderColor: "#B7B7B7",
-    zIndex: 20,
-    height: 50,
-    width: Platform.OS == 'web' ? 400 * 0.90 / 3 : Dimensions.get('window').width * 0.90 / 3,
-  },
-  dropdownfilter: {
-    width: Platform.OS == 'web' ? 400 * 0.90 / 3 : Dimensions.get('window').width * 0.90 / 3,
-    zIndex: 20
-  },
-  input: {
-    borderColor: "#B7B7B7",
-    borderWidth: 1,
-    height: 50,
-    width: Platform.OS == 'web' ? 400 * 0.90 / 1.8 : Dimensions.get('window').width * 0.90 / 2,
-    paddingLeft: 8,
-    borderRadius: 8,
-  },
-  textStyle: {
-    fontSize: 12,
-    color: 'black',
-    letterSpacing: 1,
-  },
-  textStyleHead: {
-    fontSize: 12,
-    color: 'black',
-    letterSpacing: 1,
-    fontWeight: '600'
-  }
-});
-
 
 export default Page

@@ -1,10 +1,12 @@
-import { View, Text, StyleSheet, Dimensions, Platform, ScrollView } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Text, ScrollView, Image } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import axios from 'axios';
+
+import styles from '../styles';
 import BannerSymptom from '../components/BannerSymptom';
 import ButtonPraDiagnose from '../components/ButtonPraDiagnose'
 import InputLocation from "../components/InputLocation"
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 
 function recrussion(object, array) {
   if (!array.length) return object;
@@ -18,6 +20,7 @@ function recrussion(object, array) {
 
 function Page({ navigation }) {
   const route = useRoute();
+  const [isLoading, setIsLoading] = useState(true)
   const [listAnswer, setListAnswer] = useState([]);
   const [data, setData] = useState({});
   const [question, setQuestion] = useState("");
@@ -28,6 +31,7 @@ function Page({ navigation }) {
       let { data } = await axios.get(`https://simplilife-d59aa106cc03.herokuapp.com/api/symptoms/${id}`);
       setData(data);
       setQuestion(data.firstQuestion);
+      setIsLoading(false)
       return data;
     } catch (error) {
       console.log(error);
@@ -54,8 +58,12 @@ function Page({ navigation }) {
         setQuestion(data.firstQuestion)
         navigation.navigate('PraDiagnosedPage', { id, symptom, category, icon, result });
       } else {
-        if (result) {
+        if (result.ya && result.tidak) {
           setQuestion(result.q);
+        } else {
+          setListAnswer([])
+          setQuestion(data.firstQuestion)
+          navigation.navigate('PraDiagnosedPage', { id, symptom, category, icon, result: result.q })
         }
       }
     }
@@ -63,34 +71,27 @@ function Page({ navigation }) {
 
   return (
     <View style={styles.viewPraDiagnose}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ marginBottom: 30 }}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.bottom30}>
         <InputLocation navigation={navigation} />
         <BannerSymptom icon={icon} category={category} title={symptom} />
-        <Text style={{ width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90, textAlign: "left", fontWeight: "600", padding: 8, paddingTop: 2 }}>Pertanyaan : </Text>
-        <View style={styles.questionCard}>
-          <Text style={styles.text}>{question}</Text>
+        <View style={styles.containerLoading}>
+          <Text style={styles.pertanyaanPradiagnose}>Pertanyaan : </Text>
+          {
+            isLoading ? <Image source={{ uri: "https://media.tenor.com/PfFDd3eNE_gAAAAC/loading-load.gif" }} style={styles.boxLoading} /> : (
+              <>
+                <View style={styles.questionCard}>
+                  <Text style={styles.textPraDiagnose}>{question}</Text>
+                </View>
+                <ButtonPraDiagnose key="yes" text="Ya" action={pushAnswer} />
+                <ButtonPraDiagnose key="no" text="Tidak" action={pushAnswer} />
+                {listAnswer.length ? <ButtonPraDiagnose key="back" action={popAnswer} text="Kembali ke pilihan gejala" /> : <></>}
+              </>
+            )
+          }
         </View>
-        <ButtonPraDiagnose key="yes" text="Ya" action={pushAnswer} />
-        <ButtonPraDiagnose key="no" text="Tidak" action={pushAnswer} />
-        {
-          listAnswer.length ? <ButtonPraDiagnose key="back" action={popAnswer} text="Kembali ke pilihan gejala" /> : <></>
-        }
       </ScrollView>
-
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  viewPraDiagnose: { alignItems: 'center' },
-  header: { textAlign: "left", fontWeight: "600", padding: 8, paddingTop: 4 },
-  questionCard: {
-    width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90,
-    borderRadius: 12, backgroundColor: "#F8F8F8", padding: 12, marginBottom: 10
-  },
-  text: { fontSize: 12.5, textAlign: "left", fontWeight: "600", lineHeight: 20, paddingVertical: 6 }
-});
 
 export default Page;

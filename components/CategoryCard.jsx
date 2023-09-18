@@ -1,30 +1,18 @@
-import { Image, View, StyleSheet, Text, TouchableOpacity, Dimensions, Platform } from 'react-native';
-
-function Compoent({ data, navigation }) {
+import { Image, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import styleGlobal from "../styles"
+export default function ({ data, navigation }) {
   let category = data.item
   let uri = `https://raw.githubusercontent.com/SimpliLife/asset/main/icons/gejala/color/${category.icon}`
   return (
-    <TouchableOpacity activeOpacity={.95} style={styles.card} onPress={() => navigation({
-      category
-    })}>
+    <TouchableOpacity activeOpacity={.95} style={styleGlobal.card} onPress={() => navigation({ category })}>
       <View style={styles.section}>
-        <Image
-          style={styles.image}
-          source={{ uri }} />
-        <Image
-          style={styles.question}
-          source={{
-            uri: "https://raw.githubusercontent.com/SimpliLife/asset/main/icons/question.png"
-          }} />
+        <Image style={styles.image} source={{ uri }} />
+        <Image style={styles.question} source={{ uri: "https://raw.githubusercontent.com/SimpliLife/asset/main/icons/question.png" }} />
       </View>
       <View style={styles.section}>
-        <Text style={{ flexGrow: 6, flexDirection: 'row', alignSelf: "flex-end", fontSize: 12, fontWeight: "600" }}>{category.category}</Text>
-        <View style={{ height: 15, width: 15, alignSelf: "flex-end", marginBottom: 2 }}>
-          <Image
-            style={styles.arrow}
-            source={{
-              uri: "https://raw.githubusercontent.com/SimpliLife/asset/main/icons/arrow.png"
-            }} />
+        <Text style={styles.textCategory}>{category.category}</Text>
+        <View style={styles.imageView}>
+          <Image style={styles.arrow} source={{ uri: "https://raw.githubusercontent.com/SimpliLife/asset/main/icons/arrow.png" }} />
         </View>
       </View>
     </TouchableOpacity >
@@ -32,15 +20,6 @@ function Compoent({ data, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    width: Platform.OS == 'web' ? 400 * 0.42 : Dimensions.get('window').width * 0.42,
-    height: 111,
-    margin: 8,
-    backgroundColor: "#F4F4F4",
-    borderRadius: 12,
-    padding: 10,
-    gap: 2
-  },
   section: {
     flex: 1,
     flexDirection: "row",
@@ -72,6 +51,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'justify',
   },
+  textCategory: { flexGrow: 6, flexDirection: 'row', alignSelf: "flex-end", fontSize: 12, fontWeight: "600" },
+  imageView: { height: 15, width: 15, alignSelf: "flex-end", marginBottom: 2 }
 });
-
-export default Compoent;
