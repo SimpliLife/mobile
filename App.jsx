@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styles from "./styles"
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CategoryPage from './pages/CategoryPage';
@@ -8,15 +9,16 @@ import PraDiagnosedPage from './pages/PraDiagnosedPage';
 import MedFacilityPage from './pages/MedFacilityPage';
 import SearchLocationPage from './pages/SearchLocationPage';
 import ChatPage from './pages/ChatPage';
-import { Image, Platform, StatusBar, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Image, StatusBar } from 'react-native';
 import * as Location from 'expo-location';
+import ProviderContext from './context/ProviderContext';
+
 
 const Stack = createNativeStackNavigator();
 const HeaderBackground = () => (
   <Image
-    source={require('./assets/fig/top.png')}
-    style={styles.headerBackgroundImage}
+    source={require('./assets/top.png')}
+    style={styles.headerBattery}
   />
 );
 
@@ -42,6 +44,8 @@ function App() {
     }
   };
 
+
+
   React.useEffect(() => {
     requestLocationPermission();
   }, []);
@@ -51,33 +55,27 @@ function App() {
       <StatusBar
         barStyle="light-content"
       />
-
-      <Stack.Navigator screenOptions={{
-        headerTitleStyle: {
-          fontSize: 14
-        },
-        headerTitleAlign: "center",
-        headerBackTitleVisible: false,
-        headerTintColor: "#F7F7F8",
-        headerBackground: () => <HeaderBackground />,
-      }}>
-        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="CategoryPage" component={CategoryPage} />
-        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="SymptomPage" component={SymptomPage} />
-        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="PraDiagnosePage" component={PraDiagnosePage} />
-        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="PraDiagnosedPage" component={PraDiagnosedPage} />
-        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="MedFacilityPage" component={MedFacilityPage} />
-        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="SearchLocationPage" component={SearchLocationPage} />
-        <Stack.Screen options={{ title: 'DiagnoAkses' }} name="ChatPage" component={ChatPage} />
-      </Stack.Navigator>
+      <ProviderContext >
+        <Stack.Navigator screenOptions={{
+          headerTitleStyle: {
+            fontSize: 14
+          },
+          headerTitleAlign: "center",
+          headerBackTitleVisible: false,
+          headerTintColor: "#F7F7F8",
+          headerBackground: () => <HeaderBackground />,
+        }}>
+          <Stack.Screen options={{ title: 'DiagnoAkses' }} name="CategoryPage" component={CategoryPage} />
+          <Stack.Screen options={{ title: 'DiagnoAkses' }} name="SymptomPage" component={SymptomPage} />
+          <Stack.Screen options={{ title: 'DiagnoAkses' }} name="PraDiagnosePage" component={PraDiagnosePage} />
+          <Stack.Screen options={{ title: 'DiagnoAkses' }} name="PraDiagnosedPage" component={PraDiagnosedPage} />
+          <Stack.Screen options={{ title: 'DiagnoAkses' }} name="MedFacilityPage" component={MedFacilityPage} />
+          <Stack.Screen options={{ title: 'DiagnoAkses' }} name="SearchLocationPage" component={SearchLocationPage} />
+          <Stack.Screen options={{ title: 'DiagnoAkses' }} name="ChatPage" component={ChatPage} />
+        </Stack.Navigator>
+      </ProviderContext >
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  headerBackgroundImage: {
-    flex: 1,
-    resizeMode: 'cover',
-  },
-});
 
 export default App;

@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useContext, useState, useCallback } from 'react'
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import MainContext from '../context/MainContext';
 
 const { GOOGLE_PROJECT_ID, GOOGLE_API_KEY } = {
-  GOOGLE_API_KEY: 'AIzaSyB6sUuookD3daNKD7cd1Sm2d9_SjPx7REc',
+  GOOGLE_API_KEY: '...',
   GOOGLE_PROJECT_ID: 'developer-ayusuadi'
 }
 
@@ -12,41 +12,42 @@ const containerStyle = {
   height: '400px'
 };
 
-function MyComponent() {
+function MyComponent({ data: dataFaskes }) {
   const { isLoaded } = useJsApiLoader({
     id: GOOGLE_PROJECT_ID,
     googleMapsApiKey: GOOGLE_API_KEY
   })
+  const { data } = useContext(MainContext)
+  const [map, setMap] = useState(null)
 
-  const [map, setMap] = React.useState(null)
-
-  const onLoad = React.useCallback(function callback(map) {
-    const location = AsyncStorage.getItem('location');
-    const locationCoords = JSON.parse(location);
+  const onLoad = useCallback(function callback(map) {
     // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds(
-      locationCoords.lat, locationCoords.lng
-    );
+    const bounds = new window.google.maps.LatLngBounds({
+      lat: data.latitude,
+      lng: data.longitude
+    });
     map.fitBounds(bounds);
 
     setMap(map)
   }, [])
 
-  const onUnmount = React.useCallback(function callback(map) {
+  const onUnmount = useCallback(function callback(map) {
     setMap(null)
   }, [])
 
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      center={center}
+      center={{
+        lat: data.latitude,
+        lng: data.longitude
+      }}
       zoom={10}
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
-      { /* Child components, such as markers, info windows, etc. */}
       <></>
-    </GoogleMap>
+    </GoogleMap >
   ) : <></>
 }
 

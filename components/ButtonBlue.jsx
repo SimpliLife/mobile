@@ -1,15 +1,14 @@
-import { Text, TouchableOpacity, Image, Dimensions, Platform } from 'react-native';
+import { Text, TouchableOpacity, Image } from 'react-native';
+import styles from '../styles';
 
-function ButtonBlue({ text, color, action }) {
+export default function ({ text, color, action }) {
   return (
     <TouchableOpacity
       onPress={action}
       activeOpacity={.95}
-      style={{ display: "flex", justifyContent: "space-between", backgroundColor: color, borderRadius: 8, padding: 18, flexDirection: "row", width: Platform.OS == 'web' ? 400 * 0.90 : Dimensions.get('window').width * 0.90, }}>
-      <Text style={{ color: '#FFF8F8', fontWeight: "700" }}>{text}</Text>
-      <Image source={{ uri: "https://raw.githubusercontent.com/SimpliLife/asset/main/icons/next.png" }} style={{ width: 11, height: 19 }} />
+      style={{ ...styles.buttonBlue, backgroundColor: color }}>
+      <Text style={styles.buttonBlueText}>{text}</Text>
+      <Image style={styles.buttonBlueImage} source={{ uri: "https://raw.githubusercontent.com/SimpliLife/asset/main/icons/next.png" }} />
     </TouchableOpacity>
   )
 }
-
-export default ButtonBlue
