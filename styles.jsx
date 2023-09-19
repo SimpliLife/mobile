@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
   headerBattery: {
     flex: 1,
     resizeMode: 'cover',
+    width: Dimensions.get('window').width
   },
   containerDefault: { flex: 1, alignItems: 'center' },
   categoryHeader: { justifyContent: "center" },
@@ -185,11 +186,11 @@ const styles = StyleSheet.create({
   buttonBlueText: { color: '#FFF8F8', fontWeight: "700" },
   buttonBlueImage: { width: 11, height: 19 },
   containerChat: {
-    width: width90,
+    width: width,
     flex: 1,
-    paddingHorizontal: 16,
     paddingTop: 16,
-    alignSelf: "center"
+    alignSelf: "center",
+    paddingBottom: 18
   },
   // Map
   map: {

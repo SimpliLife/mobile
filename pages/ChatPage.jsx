@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, FlatList, StyleSheet, Text } from 'react-native';
+import { View, TextInput, Button, FlatList, StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
 import { collection, onSnapshot, getDocs, addDoc, doc, updateDoc, arrayUnion } from "firebase/firestore"
 import { db } from "../config/firebase"
 import styleGlobal from "../styles"
@@ -71,36 +71,42 @@ const ChatPage = () => {
   }, []);
 
   return (
-    <View style={styleGlobal.containerChat}>
-      {
-        isLoading ? (
-          <View style={{ flex: 1 }}>
-            <View style={styles.receiver}>
-              <Text style={styles.messageText}>Doctor is typing ...</Text>
-            </View>
-          </View>
-        ) : (
-          <FlatList
-            data={chats}
-            renderItem={({ item }) => (
-              <View style={item.from === 'doctor' ? styles.receiver : styles.sender}>
-                <Text style={styles.messageText}>{item.message}</Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }} // Adjust the styles as needed
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 75 : 0} // Adjust the offset for iOS
+    >
+      <View style={styleGlobal.containerChat}>
+        {
+          isLoading ? (
+            <View style={{ flex: 1, margin: 8 }}>
+              <View style={styles.receiver}>
+                <Text style={styles.messageText}>Doctor is typing ...</Text>
               </View>
-            )}
-            keyExtractor={(item, i) => i.toString()}
+            </View>
+          ) : (
+            <FlatList
+              data={chats}
+              renderItem={({ item }) => (
+                <View style={item.from === 'doctor' ? styles.receiver : styles.sender}>
+                  <Text style={styles.messageText}>{item.message}</Text>
+                </View>
+              )}
+              keyExtractor={(item, i) => i.toString()}
+            />
+          )
+        }
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.textInput}
+            value={message}
+            onChangeText={setMessage}
+            placeholder="Type a message..."
           />
-        )
-      }
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          value={message}
-          onChangeText={setMessage}
-          placeholder="Type a message..."
-        />
-        <Button title="Kirim Pesan" onPress={handleSend} />
+          <Button title="Kirim Pesan" onPress={handleSend} />
+        </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -109,7 +115,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     backgroundColor: '#DCF8C6',
     borderRadius: 8,
-    marginBottom: 8,
+    margin: 8,
+    marginRight: 10,
     padding: 8,
     maxWidth: '70%',
   },
@@ -117,7 +124,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     backgroundColor: '#E5E5EA',
     borderRadius: 8,
-    marginBottom: 8,
+    marginLeft: 10,
+    margin: 8,
     padding: 8,
     maxWidth: '70%',
   },
@@ -130,11 +138,13 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: '#E5E5EA',
     paddingBottom: 8,
+    paddingHorizontal: 6
   },
   textInput: {
     flex: 1,
-    paddingLeft: 8,
-    paddingVertical: 8
+    paddingLeft: 2,
+    paddingVertical: 10,
+    margin: 10
   },
 });
 

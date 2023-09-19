@@ -22,7 +22,8 @@
           "location",
           "fetch"
         ]
-      }
+      },
+      "bundleIdentifier": "com.ayusudi.DiagnoAkses"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,7 +32,8 @@
       },
       "permissions": [
         "ACCESS_BACKGROUND_LOCATION"
-      ]
+      ],
+      "package": "com.ayusudi.DiagnoAkses"
     },
     "web": {
       "favicon": "./assets/favicon.png"

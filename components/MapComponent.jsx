@@ -3,7 +3,7 @@ import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import MainContext from '../context/MainContext';
 
 const { GOOGLE_PROJECT_ID, GOOGLE_API_KEY } = {
-  GOOGLE_API_KEY: '...',
+  GOOGLE_API_KEY: '',
   GOOGLE_PROJECT_ID: 'developer-ayusuadi'
 }
 
